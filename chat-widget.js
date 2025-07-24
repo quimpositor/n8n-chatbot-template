@@ -396,14 +396,26 @@
     }
 
     async function startNewConversation() {
-        currentSessionId = generateUUID();
-        const data = [{
-            action: "loadPreviousSession",
-            sessionId: currentSessionId,
-            route: config.webhook.route,
-            metadata: {
-                userId: ""
-            }
+    currentSessionId = generateUUID();
+
+    // Hide new conversation/welcome UI, show chat interface
+    chatContainer.querySelector('.brand-header').style.display = 'none';
+    chatContainer.querySelector('.new-conversation').style.display = 'none';
+    chatInterface.classList.add('active');
+
+    // Clear previous messages if any
+    messagesContainer.innerHTML = "";
+
+    // Show bot greeting
+    const botMessageDiv = document.createElement('div');
+    botMessageDiv.className = 'chat-message bot';
+    botMessageDiv.textContent = 'Hello! Welcome to Ties N Cuffs. How can I help you today?';
+    messagesContainer.appendChild(botMessageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // (Optional) If you want to preload conversation from your backend, you can do it AFTER this greeting.
+    // Otherwise, just wait for the user to send their first message before calling the webhook.
+}
         }];
 
         try {
